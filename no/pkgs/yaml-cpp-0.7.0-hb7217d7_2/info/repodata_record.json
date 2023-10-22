@@ -1,0 +1,21 @@
+{
+    "arch": "arm64",
+    "build": "hb7217d7_2",
+    "build_number": 2,
+    "channel": "conda-forge",
+    "depends": [
+        "libcxx >=14.0.4"
+    ],
+    "fn": "yaml-cpp-0.7.0-hb7217d7_2.tar.bz2",
+    "license": "MIT",
+    "license_family": "MIT",
+    "md5": "1ba3d7af8b182ae33d49e4bb567076d3",
+    "name": "yaml-cpp",
+    "platform": "osx",
+    "sha256": "a0672f4d06dc6f4e763d37927b5d0d8c4badaeb76d7bb4840650d79e90f41c3c",
+    "size": 136307,
+    "subdir": "osx-arm64",
+    "timestamp": 1664346021426,
+    "url": "https://conda.anaconda.org/conda-forge/osx-arm64/yaml-cpp-0.7.0-hb7217d7_2.tar.bz2",
+    "version": "0.7.0"
+}

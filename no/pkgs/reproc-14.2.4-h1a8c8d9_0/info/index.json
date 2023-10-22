@@ -1,0 +1,12 @@
+{
+  "arch": "arm64",
+  "build": "h1a8c8d9_0",
+  "build_number": 0,
+  "depends": [],
+  "license": "MIT",
+  "name": "reproc",
+  "platform": "osx",
+  "subdir": "osx-arm64",
+  "timestamp": 1671663394786,
+  "version": "14.2.4"
+}

@@ -1,0 +1,43 @@
+{
+  "paths": [
+    {
+      "_path": "python-scripts/jsonpointer",
+      "file_mode": "text",
+      "path_type": "hardlink",
+      "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+      "sha256": "87327b9a9ae44023ae0c6e73b220aa41c1fe64ccafb75953baad94e718d6fada",
+      "size_in_bytes": 1864
+    },
+    {
+      "_path": "site-packages/jsonpointer-2.0-py3.6.egg-info/PKG-INFO",
+      "path_type": "hardlink",
+      "sha256": "d823d60834359ac6297b41da93fc70175fe82650e5e723a980f5e2c42f9fef76",
+      "size_in_bytes": 2530
+    },
+    {
+      "_path": "site-packages/jsonpointer-2.0-py3.6.egg-info/SOURCES.txt",
+      "path_type": "hardlink",
+      "sha256": "8e8ed55d62a75bb8db29e4233c92111a0de4a31090d22aaea8120e699815328b",
+      "size_in_bytes": 240
+    },
+    {
+      "_path": "site-packages/jsonpointer-2.0-py3.6.egg-info/dependency_links.txt",
+      "path_type": "hardlink",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_in_bytes": 1
+    },
+    {
+      "_path": "site-packages/jsonpointer-2.0-py3.6.egg-info/top_level.txt",
+      "path_type": "hardlink",
+      "sha256": "06c51c6abfc2d276733c657669c92b27d0a9554f3fd16fe91d82b0a5d9d675d3",
+      "size_in_bytes": 12
+    },
+    {
+      "_path": "site-packages/jsonpointer.py",
+      "path_type": "hardlink",
+      "sha256": "14187499e7185459f1b6f411bea34a925678c47b90e3388f4494dea74ba2d23f",
+      "size_in_bytes": 9796
+    }
+  ],
+  "paths_version": 1
+}

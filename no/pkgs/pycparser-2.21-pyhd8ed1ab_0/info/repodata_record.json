@@ -1,0 +1,22 @@
+{
+    "arch": null,
+    "build": "pyhd8ed1ab_0",
+    "build_number": 0,
+    "channel": "conda-forge",
+    "depends": [
+        "python ==2.7.*|>=3.4"
+    ],
+    "fn": "pycparser-2.21-pyhd8ed1ab_0.tar.bz2",
+    "license": "BSD-3-Clause",
+    "license_family": "BSD",
+    "md5": "076becd9e05608f8dc72757d5f3a91ff",
+    "name": "pycparser",
+    "noarch": "python",
+    "platform": null,
+    "sha256": "74c63fd03f1f1ea2b54e8bc529fd1a600aaafb24027b738d0db87909ee3a33dc",
+    "size": 102747,
+    "subdir": "noarch",
+    "timestamp": 1636257201998,
+    "url": "https://conda.anaconda.org/conda-forge/noarch/pycparser-2.21-pyhd8ed1ab_0.tar.bz2",
+    "version": "2.21"
+}

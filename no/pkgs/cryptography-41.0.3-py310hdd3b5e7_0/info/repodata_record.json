@@ -1,0 +1,25 @@
+{
+    "arch": "arm64",
+    "build": "py310hdd3b5e7_0",
+    "build_number": 0,
+    "channel": "conda-forge",
+    "depends": [
+        "cffi >=1.12",
+        "openssl >=3.1.2,<4.0a0",
+        "python >=3.10,<3.11.0a0",
+        "python >=3.10,<3.11.0a0 *_cpython",
+        "python_abi 3.10.* *_cp310"
+    ],
+    "fn": "cryptography-41.0.3-py310hdd3b5e7_0.conda",
+    "license": "Apache-2.0 AND BSD-3-Clause AND PSF-2.0 AND MIT",
+    "license_family": "BSD",
+    "md5": "dc4c09a48917e775bddf3650aea90abe",
+    "name": "cryptography",
+    "platform": "osx",
+    "sha256": "607a3dc5054721628a1854d01cf600a1fbd0115d0f6ade4939f588736171c5b9",
+    "size": 1196905,
+    "subdir": "osx-arm64",
+    "timestamp": 1691444960730,
+    "url": "https://conda.anaconda.org/conda-forge/osx-arm64/cryptography-41.0.3-py310hdd3b5e7_0.conda",
+    "version": "41.0.3"
+}

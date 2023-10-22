@@ -1,0 +1,22 @@
+{
+    "arch": null,
+    "build": "pyhd8ed1ab_0",
+    "build_number": 0,
+    "channel": "conda-forge",
+    "depends": [
+        "python ==2.7.*|>=3.7"
+    ],
+    "fn": "boltons-23.0.0-pyhd8ed1ab_0.conda",
+    "license": "BSD-3-Clause",
+    "license_family": "BSD",
+    "md5": "033eb25fffd222aceeca6d58cd953680",
+    "name": "boltons",
+    "noarch": "python",
+    "platform": null,
+    "sha256": "4ff828cceb8f55cb26d23b1a4c174d22c7cd92350221724bcaf2d6632e33fdee",
+    "size": 302783,
+    "subdir": "noarch",
+    "timestamp": 1677500034639,
+    "url": "https://conda.anaconda.org/conda-forge/noarch/boltons-23.0.0-pyhd8ed1ab_0.conda",
+    "version": "23.0.0"
+}

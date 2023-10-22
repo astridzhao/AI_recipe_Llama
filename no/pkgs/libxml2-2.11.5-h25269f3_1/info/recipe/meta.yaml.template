@@ -1,0 +1,63 @@
+{% set version = "2.11.5" %}
+
+package:
+  name: libxml2
+  version: {{ version }}
+
+source:
+  url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v{{ version }}/libxml2-v{{ version }}.tar.gz
+  sha256: 9d9c1026c818c1dadc81d54cc2839cd69c632590f3dcd9b2dc9ef4a136295af1
+  patches:
+    - 0002-Make-and-install-a-pkg-config-file-on-Windows.patch
+
+build:
+  number: 1
+  run_exports:
+    # remove symbols at minor versions.
+    #    https://abi-laboratory.pro/tracker/timeline/libxml2/
+    - {{ pin_subpackage('libxml2', max_pin='x.x') }}
+
+requirements:
+  build:
+    - libtool  # [unix]
+    - {{ compiler('c') }}
+    - autoconf  # [not win]
+    - automake  # [not win]
+    - libtool  # [not win]
+    - pkg-config  # [not win]
+    - make  # [not win]
+    - m2-patch  # [win]
+    - libiconv  # [not win]
+  host:
+    - icu  # [not win]
+    - libiconv
+    - xz  # [not win]
+    - zlib
+
+test:
+  files:
+    - test.xml
+  commands:
+    - xmllint test.xml
+
+about:
+  home: http://xmlsoft.org/
+  license: MIT
+  license_family: MIT
+  license_file: Copyright
+  summary: The XML C parser and toolkit of Gnome
+  description: |
+    Though libxml2 is written in C a variety of language
+    bindings make it available in other environments.
+  doc_url: http://xmlsoft.org/html/index.html
+  doc_source_url: https://github.com/GNOME/libxml2/blob/master/doc/index.html
+  dev_url: https://git.gnome.org/browse/libxml2/
+
+extra:
+  recipe-maintainers:
+    - ocefpaf
+    - jakirkham
+    - gillins
+    - jschueller
+    - msarahan
+    - scopatz

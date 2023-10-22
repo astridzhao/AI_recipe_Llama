@@ -1,0 +1,20 @@
+{
+  "bzip2": "1",
+  "CONDA_BUILD_SYSROOT": "/Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk",
+  "channel_targets": "conda-forge main",
+  "build_platform": "osx-64",
+  "openssl": "3",
+  "c_compiler": "clang",
+  "tk": "8.6",
+  "zlib": "1.2",
+  "sqlite": "3",
+  "ncurses": "6",
+  "target_platform": "osx-arm64",
+  "c_compiler_version": "15",
+  "CI": "azure",
+  "readline": "8",
+  "xz": "5",
+  "cxx_compiler": "clangxx",
+  "libffi": "3.4",
+  "cxx_compiler_version": "15"
+}

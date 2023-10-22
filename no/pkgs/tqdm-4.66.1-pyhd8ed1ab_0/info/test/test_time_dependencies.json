@@ -1,0 +1,1 @@
+["pytest-asyncio", "pytest-cov", "pip", "pytest-timeout", "pytest"]

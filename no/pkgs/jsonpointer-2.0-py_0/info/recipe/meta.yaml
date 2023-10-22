@@ -1,0 +1,49 @@
+# This file created by conda-build 2.1.18
+# meta.yaml template originally from:
+# /recipe_root, last modified Thu Jan 18 06:49:50 2018
+# ------------------------------------------------
+
+package:
+    name: jsonpointer
+    version: '2.0'
+source:
+    fn: jsonpointer-2.0.tar.gz
+    sha256: c192ba86648e05fdae4f08a17ec25180a9aef5008d973407b581798a83975362
+    url: https://pypi.org/packages/source/j/jsonpointer/jsonpointer-2.0.tar.gz
+build:
+    noarch: python
+    noarch_python: false
+    number: '0'
+    script: python setup.py install --single-version-externally-managed --record=record.txt
+    string: py_0
+requirements:
+    build:
+        - python 3.6.4 0
+        - xz 5.2.3 0
+        - ca-certificates 2017.11.5 0
+        - openssl 1.0.2n 0
+        - readline 7.0 0
+        - zlib 1.2.11 0
+        - certifi 2017.11.5 py36_0
+        - setuptools 38.4.0 py36_0
+        - tk 8.6.7 0
+        - ncurses 5.9 10
+        - sqlite 3.20.1 2
+    run:
+        - python
+test:
+    imports:
+        - jsonpointer
+about:
+    dev_url: https://github.com/stefankoegl/python-json-pointer
+    doc_url: https://python-json-pointer.readthedocs.io/en/latest/
+    home: https://github.com/stefankoegl/python-json-pointer
+    license: BSD 3-Clause
+    license_family: BSD
+    license_file: LICENSE.txt
+    summary: Identify specific nodes in a JSON document (RFC 6901)
+extra:
+    final: true
+    recipe-maintainers:
+        - anguslees
+        - pmlandwehr

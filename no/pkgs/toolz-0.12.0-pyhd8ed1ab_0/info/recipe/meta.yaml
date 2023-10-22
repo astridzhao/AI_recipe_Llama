@@ -1,0 +1,70 @@
+# This file created by conda-build 3.21.9
+# meta.yaml template originally from:
+# /home/conda/recipe_root, last modified Sun Jul 10 20:38:19 2022
+# ------------------------------------------------
+
+package:
+  name: toolz
+  version: 0.12.0
+source:
+  sha256: 88c570861c440ee3f2f6037c4654613228ff40c93a6c25e0eba70d17282c6194
+  url: https://pypi.io/packages/source/t/toolz/toolz-0.12.0.tar.gz
+build:
+  noarch: python
+  number: '0'
+  script: /home/conda/feedstock_root/build_artifacts/toolz_1657485559105/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place/bin/python
+    -m pip install . -vv
+  string: pyhd8ed1ab_0
+requirements:
+  host:
+    - _libgcc_mutex 0.1 conda_forge
+    - _openmp_mutex 4.5 2_gnu
+    - bzip2 1.0.8 h7f98852_4
+    - ca-certificates 2022.6.15 ha878542_0
+    - ld_impl_linux-64 2.36.1 hea4e1c9_2
+    - libffi 3.4.2 h7f98852_5
+    - libgcc-ng 12.1.0 h8d9b700_16
+    - libgomp 12.1.0 h8d9b700_16
+    - libnsl 2.0.0 h7f98852_0
+    - libuuid 2.32.1 h7f98852_1000
+    - libzlib 1.2.12 h166bdaf_1
+    - ncurses 6.3 h27087fc_1
+    - openssl 3.0.5 h166bdaf_0
+    - pip 22.1.2 pyhd8ed1ab_0
+    - python 3.10.5 ha86cf86_0_cpython
+    - python_abi 3.10 2_cp310
+    - readline 8.1.2 h0f457ee_0
+    - setuptools 63.1.0 py310hff52083_0
+    - sqlite 3.39.0 h4ff8645_0
+    - tk 8.6.12 h27826a3_0
+    - tzdata 2022a h191b570_0
+    - wheel 0.37.1 pyhd8ed1ab_0
+    - xz 5.2.5 h516909a_1
+    - zlib 1.2.12 h166bdaf_1
+  run:
+    - python >=3.5
+test:
+  commands:
+    - pip check
+  imports:
+    - tlz
+    - toolz
+    - toolz.curried
+    - toolz.functoolz
+    - toolz.sandbox
+  requires:
+    - pip
+about:
+  home: https://toolz.readthedocs.org/
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  summary: A functional standard library for Python
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - eriknw
+    - jakirkham
+    - jcrist
+    - mrocklin
+    - ocefpaf

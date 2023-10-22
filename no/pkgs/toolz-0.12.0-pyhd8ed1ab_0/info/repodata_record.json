@@ -1,0 +1,22 @@
+{
+    "arch": null,
+    "build": "pyhd8ed1ab_0",
+    "build_number": 0,
+    "channel": "conda-forge",
+    "depends": [
+        "python >=3.5"
+    ],
+    "fn": "toolz-0.12.0-pyhd8ed1ab_0.tar.bz2",
+    "license": "BSD-3-Clause",
+    "license_family": "BSD",
+    "md5": "92facfec94bc02d6ccf42e7173831a36",
+    "name": "toolz",
+    "noarch": "python",
+    "platform": null,
+    "sha256": "90229da7665175b0185183ab7b53f50af487c7f9b0f47cf09c184cbc139fd24b",
+    "size": 49136,
+    "subdir": "noarch",
+    "timestamp": 1657485654230,
+    "url": "https://conda.anaconda.org/conda-forge/noarch/toolz-0.12.0-pyhd8ed1ab_0.tar.bz2",
+    "version": "0.12.0"
+}

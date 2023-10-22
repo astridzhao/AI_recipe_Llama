@@ -1,0 +1,20 @@
+{
+  "arch": "arm64",
+  "build": "py310ha5d4528_0",
+  "build_number": 0,
+  "depends": [
+    "conda >=4.14,<23.4",
+    "libmambapy 1.4.2 py310h34b6e76_0",
+    "openssl >=3.1.0,<4.0a0",
+    "python >=3.10,<3.11.0a0",
+    "python >=3.10,<3.11.0a0 *_cpython",
+    "python_abi 3.10.* *_cp310"
+  ],
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "name": "mamba",
+  "platform": "osx",
+  "subdir": "osx-arm64",
+  "timestamp": 1680793498119,
+  "version": "1.4.2"
+}

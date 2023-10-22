@@ -1,0 +1,17 @@
+{
+  "arch": null,
+  "build": "pyhd8ed1ab_1",
+  "build_number": 1,
+  "depends": [
+    "cryptography >=38.0.0,<42,!=40.0.0,!=40.0.1",
+    "python >=3.6"
+  ],
+  "license": "Apache-2.0",
+  "license_family": "Apache",
+  "name": "pyopenssl",
+  "noarch": "python",
+  "platform": null,
+  "subdir": "noarch",
+  "timestamp": 1685514648328,
+  "version": "23.2.0"
+}

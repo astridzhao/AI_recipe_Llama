@@ -1,0 +1,87 @@
+{% set name = "libsolv" %}
+{% set version = "0.7.24" %}
+{% set sha256 = "62743265222a729c7fe94c40f7b90ccc1ac5568f5ee6df46884e7ce3c16c78c7" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/openSUSE/libsolv/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+  patches:
+    - win_export_and_static_build.patch  # [win]
+    - conda_variant_priorization.patch
+    - no_error_subdir_mismatch.patch
+
+build:
+  number: 3
+  run_exports:
+    - {{ pin_subpackage(name, max_pin='x.x') }}
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - make  # [not win]
+    - ninja  # [win]
+    - cmake
+  host:
+    - zlib
+
+outputs:
+  - name: libsolv
+    script: install.sh  # [unix]
+    test:
+      commands:
+        - test -f ${PREFIX}/lib/libsolv${SHLIB_EXT}  # [unix]
+        - test -f ${PREFIX}/lib/libsolvext${SHLIB_EXT}  # [unix]
+        - test -f ${PREFIX}/lib/libsolv.so.1  # [linux]
+        - test -f ${PREFIX}/include/solv/repo.h  # [unix]
+        - if exist %LIBRARY_INC%\solv\repo.h (exit 0) else (exit 1)  # [win]
+        - if exist %LIBRARY_LIB%\solv.lib (exit 0) else (exit 1)  # [win]
+        - if exist %LIBRARY_LIB%\solvext.lib (exit 0) else (exit 1)  # [win]
+        - if exist %LIBRARY_BIN%\solv.dll (exit 0) else (exit 1)  # [win]
+        - dumpsolv.exe -h  # [win]
+        - dumpsolv -h  # [unix]
+  - name: libsolv-static
+    script: install.sh  # [unix]
+    script: install_static.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - make  # [not win]
+        - ninja  # [win]
+        - cmake
+      host:
+        - zlib
+        - {{ pin_subpackage("libsolv", exact=True) }}
+      run:
+        - {{ pin_subpackage("libsolv", exact=True) }}
+    test:
+      commands:
+        - test -f ${PREFIX}/lib/libsolv.a  # [unix]
+        - test -f ${PREFIX}/lib/libsolvext.a  # [unix]
+        - if exist %LIBRARY_LIB%\solv_static.lib (exit 0) else (exit 1)  # [win]
+        - if exist %LIBRARY_LIB%\solvext_static.lib (exit 0) else (exit 1)  # [win]
+
+about:
+  home: https://github.com/openSUSE/libsolv
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE.BSD
+  summary: Library for solving packages and reading repositories
+  description: libsolv, a free package dependency solver using a satisfiability algorithm.
+  dev_url: https://github.com/openSUSE/libsolv
+
+extra:
+  recipe-maintainers:
+    - AntoinePrv
+    - pavelzw
+    - SylvainCorlay
+    - JohanMabille
+    - wolfv
+    - davidbrochart
+    - adriendelsalle

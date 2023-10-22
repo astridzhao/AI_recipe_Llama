@@ -1,0 +1,15 @@
+{
+  "arch": "arm64",
+  "build": "hffc8910_0",
+  "build_number": 0,
+  "depends": [
+    "libcxx >=14.0.4"
+  ],
+  "license": "MIT",
+  "license_family": "MIT",
+  "name": "fmt",
+  "platform": "osx",
+  "subdir": "osx-arm64",
+  "timestamp": 1661661278672,
+  "version": "9.1.0"
+}

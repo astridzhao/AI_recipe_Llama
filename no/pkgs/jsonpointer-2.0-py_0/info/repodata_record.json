@@ -1,0 +1,21 @@
+{
+    "arch": null,
+    "build": "py_0",
+    "build_number": 0,
+    "channel": "conda-forge",
+    "depends": [
+        "python"
+    ],
+    "fn": "jsonpointer-2.0-py_0.tar.bz2",
+    "license": "BSD 3-Clause",
+    "license_family": "BSD",
+    "md5": "07d85c22a3beb102a48cd123df84c2a6",
+    "name": "jsonpointer",
+    "noarch": "python",
+    "platform": null,
+    "sha256": "da279af2285d8f575a7f5652e83bf7f36155c4c63154e385a9d171efcc607bc1",
+    "size": 8737,
+    "subdir": "noarch",
+    "url": "https://conda.anaconda.org/conda-forge/noarch/jsonpointer-2.0-py_0.tar.bz2",
+    "version": "2.0"
+}
