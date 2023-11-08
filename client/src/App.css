@@ -1,0 +1,77 @@
+.App {
+  text-align: center;
+  display: flex; /* Use flexbox to allow child elements to grow or shrink */
+  flex-direction: column; /* Stack children vertically */
+  min-height: 100vh; /* Ensure the app fills the full viewport height */
+
+}
+
+.App-logo {
+  height: 10vmin;
+  pointer-events: none;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    margin-top: 20px;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  flex-grow: 1; /* Allow the header to grow and fill available space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(11px + 2vmin);
+  color: white;
+  white-space: pre-wrap;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App-link {
+  color: #61dafb;
+  margin-top: auto; /* Push the link to the bottom */
+  font-size: calc(4px + 2vmin);
+  margin-bottom: 20px; 
+}
+
+/* Add styles for the input box */
+.input-box {
+  width: 100%; /* Make input box bigger */
+  padding: 10px; /* Add some padding inside the input box */
+  margin-bottom: 20px; /* Add space below the input box */
+}
+
+/* Add styles for the button */
+.submit-button {
+  padding: 8px 15px; /* Add padding to make the button bigger */
+  margin-top: 20px; /* Add space above the button */
+}
+
+/* Style the container for input */
+.recipe-generation-input {
+  font-size: 14px;
+  padding: 10px;
+  margin-top: 20px; 
+  margin-bottom: 30px; /* Add space below the input section */
+  white-space: pre-wrap;
+  text-align: left;
+  border: black 2px solid;
+  
+  border-radius: 3px;
+}
+
+
