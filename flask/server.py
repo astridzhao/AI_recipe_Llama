@@ -54,16 +54,16 @@ class recipeDAO(object):
         
         q = SimpleQueue()
 
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
+        # process = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
         
-        output = process.stdout.read()
+        # output = process.stdout.read()
         
-        marker_index = output.find("[/INST]")
-        if marker_index != -1:
-            assistant_response = output[marker_index + len("[/INST]"):] 
+        # marker_index = output.find("[/INST]")
+        # if marker_index != -1:
+        #     assistant_response = output[marker_index + len("[/INST]"):] 
 
-        dialog_history.append({"role": "assistant", "content": assistant_response})
-        # assistant_response = user_input +"\n new recipe"
+        # dialog_history.append({"role": "assistant", "content": assistant_response})
+        assistant_response = user_input +"\n new recipe"
         response = {'llm_output': assistant_response}
         
 # Testing:         

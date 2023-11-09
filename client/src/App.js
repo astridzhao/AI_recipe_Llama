@@ -6,14 +6,27 @@ import React, { useState,Component } from 'react';
 import "./App.css";
 
 function App() {
-  const [input, setInput] = useState("Tomato, Egg, Cheese, Turkey");
+  const [formValues, setFormValues]  = useState({
+    input: "Tomato, Egg, Cheese, Turkey",
+    cuisine: "Asian",
+  });
   const [recipeResponse, setRecipeResponse] = useState(null);
   const [error, setError] = useState(null);
 
   const change = event =>{
-    const newValue = event.target.value
-    setInput(newValue)
+    const {name, value} = event.target
+    setFormValues(prevValues => ({
+      ...prevValues, // Spread the previous values to retain them
+      [name]: value  // Update only the input field with the new value
+    }));
   }
+  //   const {name_cuisine, value_cuisine} = event.target
+  //   setFormValues(prevValues => ({
+  //     ...prevValues, // Spread the previous values to retain them
+  //     [name_cuisine]: value_cuisine  // Update only the input field with the new value
+  //   }));
+  // }
+
 
   function GenerationClick() {
     let data = {
@@ -21,7 +34,7 @@ function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 'ingredient': input}),
+      body: JSON.stringify({'ingredient': formValues.input}),
     };
 
     //outputs a message to the web console
@@ -36,7 +49,6 @@ function App() {
     })
     .then((data) => { //used to handle the resolution of the Promise returned by the .json() method.
       const llmOutput = data.llm_output;
-     
       setRecipeResponse(llmOutput); // Set the response data to the state
       console.log(llmOutput);
     })
@@ -45,21 +57,34 @@ function App() {
       console.error('There has been a problem with your fetch operation:', error);
     });
   }
+
+  function EmptyClick() {
+
+  }
+
  return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-
-          <div className="Recipe Generation Input">
+          <div className="input-box">
             <p>
               Enter your recipe ingredients below!
             </p>
             <input 
-                className = "input-box"
-                onChange = {change} 
-                value = {input} 
-                type = "text" 
-                required />
+              className="ingredient-box"
+              name="input" // Correct attribute name is "name"
+              value={formValues.input} // Correct attribute name is "value"
+              onChange={change} 
+              type="text" 
+              required 
+            />
+            <input 
+              className="cuisine-box"
+              name="cuisine" // Correct attribute name is "name"
+              value={formValues.cuisine} // Correct attribute name is "value"
+              onChange={change} 
+              type="text"
+            />
+
             <button 
                 className = "submit-button" 
                 onClick={GenerationClick}>Recipe start
@@ -71,7 +96,14 @@ function App() {
               {recipeResponse}
               {/* {<div>{JSON.stringify(recipeResponse)}</div>} */}
               {error && <div>Error: {error.message}</div>}
-  
+             
+          </div>
+
+          <div className="empty-output">
+            <button 
+                  className = "empty-button" 
+                  onClick={EmptyClick}>Empty Generation
+              </button>
           </div>
 
           <a
