@@ -44,10 +44,10 @@ dialog_history.append({"role": "user", "content": user_input})
 # Print the initial dialog history
 # print_dialog_history()
     
-prompt_template = f'''[INST] <<SYS>>
+prompt_template = f'''<s>[INST]<<SYS>>\n
                         {SYSTEM_PROMPT}
-                        <</SYS>>
-                        {user_input} [/INST]'''
+                        \n<</SYS>>\n\n
+                        {user_input}[/INST]'''
 # Start the subprocess and the threading to handle its output
 # # Generate response
 if (os.getcwd() != "/Users/astridz/Documents/AI_recipe/llama.cpp"):

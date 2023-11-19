@@ -7,20 +7,26 @@ import Home from './pages/Homes';
 import Reports from './pages/Reports';
 import Products from './pages/Products';
 import "./App.css";
+import { ChakraProvider } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
+
 
 function App() {
   const [formValues, setFormValues]  = useState({
-    input: "Tomato, Egg, Cheese, Turkey",
-    cuisine: "Asian",
+    ingredient: "Tomato, Egg, Cheese, Turkey",
+    cuisine_style: "Asian",
+    serving_size: "2",
   });
   const [recipeResponse, setRecipeResponse] = useState(null);
   const [error, setError] = useState(null);
   const [checked, setChecked] = useState(true);
-
-  const handleChange = val => {
-    setChecked(val)
+  const [selectedRestriction, setSelectedRestriction] = useState("No Restriction")
+  const handleChange_recipelength = val => {
+    setChecked(val);
   }
-
+  const handleChange_dietary = (event) => {
+    setSelectedRestriction(event.target.value); // onChange handler
+};
   const change = event =>{
     const {name, value} = event.target
     setFormValues(prevValues => ({
@@ -28,13 +34,6 @@ function App() {
       [name]: value  // Update only the input field with the new value
     }));
   }
-  //   const {name_cuisine, value_cuisine} = event.target
-  //   setFormValues(prevValues => ({
-  //     ...prevValues, // Spread the previous values to retain them
-  //     [name_cuisine]: value_cuisine  // Update only the input field with the new value
-  //   }));
-  // }
-
 
   function GenerationClick() {
     let data = {
@@ -42,7 +41,11 @@ function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({'ingredient': formValues.input}),
+      body: JSON.stringify({'ingredient': formValues.ingredient, 
+                            'cuisine_style': formValues.cuisine_style, 
+                            'serving_size': formValues.serving_size,
+                            'dietary_restriction': selectedRestriction,
+                            'easy_recipe': checked}),
     };
 
     //outputs a message to the web console
@@ -85,47 +88,62 @@ function App() {
         </>
 
         <div className="App-header">
-          
+        <p>Enter your recipe ingredients, cuisine style, and serving size! The estimated waiting time is 40s.</p>
           <div className="input-box">
-            <p>Enter your recipe ingredients below!</p>
               <input className="ingredient-box"
-                name="input" // Correct attribute name is "name"
-                value={formValues.input} // Correct attribute name is "value"
+                name="ingredient" // Correct attribute name is "name"
+                value={formValues.ingredient} // Correct attribute name is "value"
                 onChange={change} 
                 type="text" 
                 required />
               <input className="cuisine-box"
-                name="cuisine" // Correct attribute name is "name"
-                value={formValues.cuisine} // Correct attribute name is "value"
+                name="cuisine_style" // Correct attribute name is "name"
+                value={formValues.cuisine_style} // Correct attribute name is "value"
                 onChange={change} 
-                type="text"/>
-
+                type="text"
+                required/>
+              <input className="serving-box"
+                name="serving_size" // Correct attribute name is "name"
+                value={formValues.serving_size} // Correct attribute name is "value"
+                onChange={change} 
+                type = "number"
+                required/>
               <div className="recipeLength" style={{textAlign: "center"}}>
                     <p style={{ marginRight: "10px" }}>Easy Recipe</p>
                     <ReactSwitch
                       checked={checked}
-                      onChange={handleChange}
+                      onChange={handleChange_recipelength}
+                      required
                     />
+              </div>
+              <div className="dietaryRestriction" style={{textAlign: "center", font: "Times New Roman"}}>
+                    <p style={{ marginRight: "10px" }}>Dietary Restriction</p>
+                    <select value={selectedRestriction}  onChange={handleChange_dietary}> {/* Select component with value and onChange */}
+                      <option value="No Restriction">No Restriction</option> 
+                      <option value="Gluten-Free">Gluten-Free</option> 
+                      <option value="Vegetarian">Vegetarian</option>
+                      <option value="Pescatarian">Pescatarian</option>
+                      <option value="Vegan">Vegan</option>
+                      <option value="Lactose Intolerance">Lactose Intolerance</option>
+                      <option value="Shellfish Allergies">Shellfish Allergies</option>
+                      <option value="Nut Allergies">Nut Allergies</option>
+                      <option value="Low-Carb/Keto">Low-Carb/Keto</option>
+                      
+                  </select>
               </div>
 
           </div>
 
-          <button className='button-submit' onClick={GenerationClick}>Recipe start</button>
-
-          <div className="output-block">
-            <div className="recipe-generation-output"  style={{ display: "inline-block" , width: "1200px",
-                height: "200px", color:"white",  borderBlock: "solid", borderBlockColor: "white", writingMode: "horizontal-tb"
-                }}> {recipeResponse }{error}  </div>    
-            <button className = "empty-button" onClick={EmptyClick}>Empty Generation </button>
+          <div className="button">
+          <Button className='button-submit'  onClick={GenerationClick}>Recipe start</Button>
+          <Button className = "empty-button" onClick={EmptyClick}>Empty Generation </Button>
           </div>
-          
-          <a
-            className="App-link"
-            href="https://www.allrecipes.com/recipes/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Know more recipe!
-          </a>
+
+         <div className="recipe-generation-output"  style={{ display: "inline-block" , width: "1200px",
+                height: "380px", color:"white",  borderBlock: "solid", borderBlockColor: "white", writingMode: "horizontal-tb"
+                }}> {recipeResponse }{error}  
+                
+          </div>
 
       </div>
       </div>
