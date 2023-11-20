@@ -9,75 +9,64 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(90, 158, 236);
+  background-color: rgb(250, 250, 250);
   flex-grow: 1;
   justify-content:top;
   min-height: 90vh;
   /* flex-grow: ; Allow the header to grow and fill available space */
-  font-size: calc(11px + 2vmin);
-  color: white;
+  font-size: calc(8px + 1vmin);
+  color: rgb(22, 21, 21);
   white-space: pre-wrap;
   font-family:Georgia, 'Times New Roman', Times, serif;
+  padding-top: 20px;
 }
 
 /* Add styles for the input box */
 .input-box {
   display: flex; /* Establish this as a flex container */
-  flex-direction:row; /* Align children in a column */
-  align-items: center; /* Center children horizontally */
-  justify-content: center; /* Center children vertically */
-  width: 100%; /* Full width */
+  align-items:center; /* Center children horizontally */
+  width: 85%; /* Full width */
   padding: 10px; /* Padding inside the input box */
-
+  
 }
 .ingredient-box{
   font-family:Georgia, 'Times New Roman', Times, serif;
   color:#5f6567;
-  width: 40%; /* Make input box bigger */
-  padding: 10px; /* Add some padding inside the input box */
+ 
+  padding: 5px; /* Add some padding inside the input box */
 }
 .cuisine-box{
   color:#5f6567;
   font-family:Georgia, 'Times New Roman', Times, serif;
-  width: 10%; /* Make input box bigger */
-  padding: 10px; /* Add some padding inside the input box */
+ 
+  padding: 5px; /* Add some padding inside the input box */
 }
 .serving-box{
   color:#5f6567;
   font-family:Georgia, 'Times New Roman', Times, serif;
-  width: 5%; /* Make input box bigger */
-  padding: 10px; /* Add some padding inside the input box */
-}
-.recipeLength{
-  font-size: 14px;
-  display: flex; /* Enable Flexbox */
-  justify-content: center; /* Center items horizontally */
-  align-items: center; /* Align items vertically in the center */
-  text-align: center; /* Center the text */
-  margin-left: 10px;
-}
-.dietaryRestriction{
-  font-size: 14px;
-  display: flex; /* Enable Flexbox */
-  justify-content: center; /* Center items horizontally */
-  align-items: center; /* Align items vertically in the center */
-  text-align: center; /* Center the text */
-  margin-left: 10px;
+  padding: 5px; /* Add some padding inside the input box */
 }
 
+/* .dietaryRestriction{
+  font-size: 14px;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  padding: 5px;
+} */
 
 
 .button{
   display: flex;
-  align-items: center;
-  flex-grow: 1;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-direction:row; 
   justify-items: auto; /* Center children vertically */
 }
 .button-submit{
   width: 180px;        
   height: 20px;       
-  padding: 10px 30px;
+  padding: 5px 10px;
   display:flex;
   align-items: center;
   justify-content: center;
@@ -87,7 +76,15 @@
 .empty-button{
   width: 180px;        
   height: 20px;       
-  padding: 10px 30px;
+  padding: 5px 10px;
+  display:flex;
+  align-items: center;
+}
+
+.copy-button{
+  width: 180px;        
+  height: 20px;       
+  padding: 5px 10px;
   display:flex;
   align-items: center;
 }
@@ -96,6 +93,7 @@
 .recipe-generation-output {
   font-size: 14px;
   padding: 5px;
+  font-family: 'Franklin Gothic Medium', Arial, sans-serif;
   white-space: pre-wrap;
   text-align: left;
   justify-content: center;
@@ -106,6 +104,7 @@
 * {
   box-sizing: border-box;
   padding: 0;
+
   
 }
 .home,
