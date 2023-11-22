@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import os, subprocess, re
 from flask_restx import Api, Resource, fields
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_cors import CORS
-from queue import SimpleQueue
-from threading import Thread
+import queue
+import threading
 import time
 
 
@@ -30,7 +30,7 @@ recipe_response = api.model('RecipeResponse', {
     'llm_output': fields.String(required=True, readonly=True, description='Llama answer'),
 })
 
-class recipeDAO(object):    
+class recipeDAO(object):  
     def generate(self, request):
         # Extract user inputs from the request dictionary
         user_input = request.get('ingredient')  # Provide a default value if key is not found
@@ -39,12 +39,11 @@ class recipeDAO(object):
         dietary_restriction = request.get("dietary_restriction")
         
         #initialize the dialog
-        # 
         SYSTEM_PROMPT = f"""You are a helpful recipe-generating assistant. Based on the user provided ingredients, you will generate a recipe. \
         Adjust recipe by following the rules: \
-        1. Describe Ingredient List, Instruction in 150 words. \
-        2. If you need add any other ingredients, tell the user. \
-        3. Serving size is for {serving_size} adults. Cuisine style is {cuisine_style}. \
+        1. Describe Ingredient List and Instruction in 150 words. \
+        2. If you need use any ingredients outside the user's list, warn the user. \
+        3. Serving size is for {serving_size} adults, multiply ingredients size accordingly. Cuisine style is {cuisine_style}. \
         4. Notice the user has {dietary_restriction} restriction."""
         # 6. You don't have to use all ingredients.
         # 3. Choose some common spice/sauce. \
@@ -68,28 +67,22 @@ class recipeDAO(object):
         B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
         SYSTEM_PROMPT = B_SYS + SYSTEM_PROMPT + E_SYS
         template = B_INST + SYSTEM_PROMPT + user_input + E_INST
-        
         # ./main -m llama-2-7b-chat.Q4_K_M.gguf -c 2048 -b 1024 -p "<<SYS>you are a helpful recipe-generate assistant\n<</SYS>>\n\n"
-        
-        args = ['./main', '-m', pure_name, '-c', '2048', '-n', '1024', '-b', '1024', '-p', template]
+        args = ['./main', '-m', pure_name, '-c', '2048', '-n', '1024', '-b', '1024', '-t', '12', '-ngl', '4', '-p', template]
 
         if (os.getcwd() != llama_cpp_path):
             os.chdir(llama_cpp_path)
-        
+    
         process = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
         start_time = time.time()
         output = process.stdout.read()
-        # Testing:
-        # dialog_history.append({"role": "assistant", "content": output})
-        # response = {'llm_output': output}
-
-        marker_index = output.find("[/INST]")
         assistant_response = ""
+        marker_index = output.find("[/INST]")
         if marker_index != -1:
             assistant_response = output[marker_index + len("[/INST]"):] 
-        dialog_history.append({"role": "assistant", "content": assistant_response})
+        print(assistant_response)
         response = {'llm_output': assistant_response}
-
+        
         end_time = time.time()
         elapsed_time = end_time - start_time
         print("total time :",  elapsed_time)
@@ -110,6 +103,7 @@ class TodoList(Resource):
     def post(self):
         '''Create a new task'''
         return DAO.generate(api.payload), 201
+
             
 if __name__ == "__main__":
     app.run(debug=True)

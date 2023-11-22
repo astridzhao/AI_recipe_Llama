@@ -1,30 +1,23 @@
 // https://github.com/chaoocharles/sppms/blob/master/project-progress/src/App.js
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Homes';
-import Reports from './pages/Reports';
-import Products from './pages/Products';
+import React, { useState , useEffect} from 'react';
+import { Router, Routes, Route, Link } from 'react-router-dom';
+// import Home from './pages/Homes';
+// import Shoppinglists from './pages/Shoppinglists';
+// import Recipes from './pages/Recipes';
+import ResponsiveAppbar from './Appbar';
 import "./App.css";
-import { ChakraProvider } from "@chakra-ui/react"
+import color from "@mui/material/colors"
 import TextField from "@mui/material/TextField"
 import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import CircularProgress from '@mui/material/CircularProgress';
-import Select, {SelectChangeEvent} from '@mui/material/Select';
-// import Switch from '@mui/material/Switch';
-// import Switch from 'react-switch'
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import copy from "copy-to-clipboard";
-
 
 function App() {
   const [formValues, setFormValues]  = useState({
@@ -32,9 +25,11 @@ function App() {
     cuisine_style: "Chinese",
     serving_size: "2",
   });
-  const [recipeResponse, setRecipeResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [recipeResponse, setRecipeResponse] = useState("");
   const [error, setError] = useState(null);
   const [selectedRestriction, setSelectedRestriction] = useState("No Restriction")
+  const [requestId, setRequestId] = useState(null); // Add a state for tracking request ID
 
   const copyToClipboard = () => {
       copy(recipeResponse);
@@ -52,10 +47,7 @@ function App() {
   const handleChange_dietary = (event3) => {
     setSelectedRestriction(event3.target.value); // onChange handler
   }
-  // const onCopy = () => {
-  //   setIsCopied(true);
-  //   setTimeout(() => setIsCopied(false), 1500); // Reset the copied status after 1.5 seconds
-  // };
+
 
   function GenerationClick() {
     let data = {
@@ -69,8 +61,7 @@ function App() {
                             'dietary_restriction': selectedRestriction}),
     };
 
-    //outputs a message to the web console
-    console.log('Making fetch call with data:', data.body);
+    setLoading(true);
     
     fetch("http://127.0.0.1:5000/recipes/recipe", data)
     .then((response) => { //handle the initial Response object 
@@ -80,16 +71,45 @@ function App() {
       return response.json();
     })
     .then((data) => { //used to handle the resolution of the Promise returned by the .json() method.
-      const llmOutput = data.llm_output;
-      setRecipeResponse(llmOutput, ); // Set the response data to the state
-      console.log(llmOutput);
+      setRequestId(data.llm_output);
+      console.log(data);
+      setLoading(false);
     })
     .catch((error) => {
       setError(error);
+      setLoading(false);
       console.error('There has been a problem with your fetch operation:', error);
     });
+
   }
 
+  useEffect(() => {
+    console.log("start generating recipe", requestId);
+    if (!requestId){
+      console.error("no request ID")
+      return
+    }; // Do nothing if no request ID
+    const interval = setInterval(() => {
+
+    fetch(`http://127.0.0.1:5000/recipes/recipe/${requestId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.llm_output) {
+            console.log("set value");
+            setRecipeResponse(prev => prev + data.llm_output); // Append new output
+          }
+        })
+        .catch(error => {
+          setLoading(false);
+          console.error('Error:', error);
+        });
+    }, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [requestId]); // Dependency array includes requestId
+
+
+  
   function EmptyClick() {
     setRecipeResponse(" ");
     setError(" ")
@@ -97,19 +117,10 @@ function App() {
 
 return (
       <div className="App">
-          <>
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route path='/' exact component={Home} />
-              <Route path='/reports' component={Reports} />
-              <Route path='/products' component={Products} />
-            </Routes>
-          </Router>
-        </>
-
+        <div><ResponsiveAppbar /></div>
+      
         <Alert severity="info">The estimated waiting time is 40s.</Alert>
-        <Alert severity="warning">Please empty the generation before start a new generation.</Alert>
+        <Alert severity="warning">Please empty the last generation before start the new generation.</Alert>
 
         <div className="App-header">
           
@@ -147,7 +158,7 @@ return (
             <Grid item xs={4}>
               <section className="dietaryRestriction" style={{textAlign: "left", font: "Times New Roman"}}>
                   <FormControl fullWidth sx={{minWidth: 200 }} >
-                  <InputLabel id="Required-basic" >Restriction</InputLabel>
+                  <InputLabel id="Required-basic" >Dietary Restriction</InputLabel>
                       < Select 
                         value={selectedRestriction}  
                         label="Required" 
@@ -173,7 +184,7 @@ return (
 
         
           <div className="button">
-          <Button className='button-submit'  onClick={GenerationClick}>Recipe start</Button>
+          <Button className='button-submit'  onClick={GenerationClick} >Recipe start</Button>
           <Button className = "empty-button" onClick={EmptyClick}>Empty Generation </Button>
           <Button className='copy-button' onClick={copyToClipboard}>Copy to Clipboard</Button>
           </div>
@@ -181,7 +192,7 @@ return (
           <div className="recipe-generation-output"  style={{ display: "inline-block" , width: "1200px",
                 height: "490px", padding: "20px", color:"black",  backgroundColor: "rgb(243, 250, 224)", 
                 borderBlock: "solid", borderBlockColor: "white", writingMode: "horizontal-tb",
-                }}> {recipeResponse }{error} 
+                }}> {recipeResponse}{error} 
           </div>
 
       </div>
@@ -189,20 +200,3 @@ return (
     );
 }
 export default App;
-
-
-// <div className="recipeLength">
-// <FormControl component="fieldset">
-//   <FormControlLabel
-//     value="Easy recipe"
-//     control={
-//       <Switch
-//         checked={checked}
-//         inputProps={{ 'aria-label': 'Switch' }}
-//         onChange={handleChange_recipelength}
-//       />
-//     }
-//     label="Easy recipe"
-//     labelPlacement="top"
-//   />
-// </FormControl></div>
