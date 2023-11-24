@@ -5,8 +5,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_cors import CORS
 import queue
 import threading
-import uuid, random
-import time
+import uuid, time
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -46,7 +45,8 @@ class recipeDAO(object):
         1. Describe Ingredient List and Instruction in 150 words. \
         2. If you need use any ingredients outside the user's list, warn the user. \
         3. Serving size is for {serving_size} adults, multiply ingredients size accordingly. Cuisine style is {cuisine_style}. \
-        4. Notice the user has {dietary_restriction} restriction."""
+        4. Notice the user has {dietary_restriction} restriction. \
+        5. Add some emoji reflecting the words."""
 
         dialog_history = [{"role": "system", "content": SYSTEM_PROMPT}]
         dialog_history.append({"role": "user", "content": user_input})
@@ -62,7 +62,7 @@ class recipeDAO(object):
         B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
         SYSTEM_PROMPT = B_SYS + SYSTEM_PROMPT + E_SYS
         template = B_INST + SYSTEM_PROMPT + user_input + E_INST
-        args = ['./main', '-m', pure_name, '-c', '2048', '-n', '1024', '-b', '1024',  '-ngl', '8', '-p', template]
+        args = ['./main', '-m', pure_name, '-c', '2048', '-n', '1024', '-b', '1024',  '-ngl', '2', '-p', template]
 
         # # Start a new thread for running the subprocess
         # # Testing: threading.Thread(target=self.run_subprocess, args=(args,)).start()
@@ -79,10 +79,26 @@ class recipeDAO(object):
         process = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
         while True:
             line = process.stdout.readline()
-            # queue.put(line)
-            print(line)
-            output_queues[request_id].put(line)
-            if not line:
+            start_time = time.time()
+            if line:
+                if '[/INST]' in line:
+                    marker_index = line.find("[/INST]")
+                    if marker_index != -1:
+                        newline =  line[marker_index + len("[/INST]"):] 
+                        output_queues[request_id].put(newline)
+                        print(newline)
+                elif "[INST]"  in line or "<</SYS>>" in line or "You are a helpful recipe-generating assistant." in line:
+                    continue
+                else:
+                    if line == "":
+                        continue
+                    else:
+                        end_time = time.time()
+                        elapsed_time = end_time - start_time
+                        print("total time :",  elapsed_time)
+                        print(line)
+                        output_queues[request_id].put(line)
+            else:
                 break
             
         # print(output_queues[request_id].get())
@@ -99,7 +115,6 @@ class Recipe(Resource):
         request_id = str(uuid.uuid4())  # Generate a unique request_id
         DAO.generate(api.payload, request_id) 
         return {"llm_output": request_id}, 202
-        # return {"llm_output": request_id}, 202
         # return DAO.generate(api.payload), 202
 
 
@@ -112,11 +127,12 @@ class RecipeResult(Resource):
     @ns.marshal_with(recipe_response, code=200)
     def get(self, request_id):
         '''Get the result of the recipe generation'''
-        if request_id in output_queues:
-            while not output_queues[request_id].empty():
-                
+        if request_id in output_queues or not output_queues[request_id].empty():
+                console.log(output_queues[request_id].get())
                 return {"llm_output": output_queues[request_id].get()}, 200
-            
+            # else:
+            #     del output_queue[request_id]
+            #     return {"llm_output": "Generation complete."}, 200
         else:
             return {"message": "No result available yet. Please try again later."}, 202
 

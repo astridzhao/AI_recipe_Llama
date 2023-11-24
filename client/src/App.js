@@ -1,6 +1,6 @@
 // https://github.com/chaoocharles/sppms/blob/master/project-progress/src/App.js
 import React, { useState , useEffect} from 'react';
-import { Router, Routes, Route, Link } from 'react-router-dom';
+// import { Router, Routes, Route, Link } from 'react-router-dom';
 // import Home from './pages/Homes';
 // import Shoppinglists from './pages/Shoppinglists';
 // import Recipes from './pages/Recipes';
@@ -14,7 +14,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
 import copy from "copy-to-clipboard";
@@ -48,7 +47,7 @@ function App() {
     setSelectedRestriction(event3.target.value); // onChange handler
   }
 
-
+  
   function GenerationClick() {
     let data = {
       method: "POST",
@@ -61,8 +60,7 @@ function App() {
                             'dietary_restriction': selectedRestriction}),
     };
 
-    setLoading(true);
-    
+    setLoading(true)
     fetch("http://127.0.0.1:5000/recipes/recipe", data)
     .then((response) => { //handle the initial Response object 
       if (!response.ok) {
@@ -89,8 +87,7 @@ function App() {
       console.error("no request ID")
       return
     }; // Do nothing if no request ID
-    const interval = setInterval(() => {
-
+    const interval = setInterval(() => { //to create a repeating interval that executes a function at a specified time interval
     fetch(`http://127.0.0.1:5000/recipes/recipe/${requestId}`)
         .then(response => response.json())
         .then(data => {
@@ -98,19 +95,24 @@ function App() {
             console.log("set value");
             setRecipeResponse(prev => prev + data.llm_output); // Append new output
           }
+          else {
+            clearInterval(interval);
+            setLoading(false);
+          }
         })
         .catch(error => {
+          clearInterval(interval); // Clear the interval on error
           setLoading(false);
           console.error('Error:', error);
         });
-    }, 5000); // Poll every 5 seconds
-
+    }, 100); // Poll every 0.1 seconds
+    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(interval);
+    setLoading(false);
   }, [requestId]); // Dependency array includes requestId
 
-
-  
   function EmptyClick() {
+    setLoading(false)
     setRecipeResponse(" ");
     setError(" ")
   }
@@ -119,7 +121,7 @@ return (
       <div className="App">
         <div><ResponsiveAppbar /></div>
       
-        <Alert severity="info">The estimated waiting time is 40s.</Alert>
+        <Alert severity="info">The estimated waiting time is 15s.</Alert>
         <Alert severity="warning">Please empty the last generation before start the new generation.</Alert>
 
         <div className="App-header">
@@ -127,7 +129,7 @@ return (
           <div className="input-box">
           <Grid container spacing={2}>
             <Grid item xs={12} >
-              <TextField fullWidth label="Ingredients" variant="outlined" 
+              <TextField fullWidth id="outlined-ingredient" label="Ingredients" variant="outlined" 
                 className="ingredient-box"
                 name="ingredient" // Correct attribute name is "name"
                 value={formValues.ingredient} // Correct attribute name is "value"
@@ -136,7 +138,7 @@ return (
                 required />
             </Grid>
             <Grid item xs={4}>
-              <TextField fullWidth id="Required-basic" label="Serving Size" variant="outlined" 
+              <TextField fullWidth id="outlined-servingsize" label="Serving Size" variant="outlined" 
                   className="serving-box"
                   name="serving_size" // Correct attribute name is "name"
                   value={formValues.serving_size} // Correct attribute name is "value"
@@ -146,7 +148,7 @@ return (
             </Grid>
             <Grid item xs={4} >
               <TextField  fullWidth
-                  id="Required-basic" label="Cuisine" variant="outlined" 
+                  id="outlined-Cuisine" label="Cuisine" variant="outlined" 
                   className="cuisine-box"
                   name="cuisine_style" 
                   value={formValues.cuisine_style} 
@@ -156,14 +158,12 @@ return (
             </Grid>
             
             <Grid item xs={4}>
-              <section className="dietaryRestriction" style={{textAlign: "left", font: "Times New Roman"}}>
-                  <FormControl fullWidth sx={{minWidth: 200 }} >
-                  <InputLabel id="Required-basic" >Dietary Restriction</InputLabel>
+              <section className="dietaryRestriction" style={{textAlign: "left"}}>
+                  <FormControl fullWidth >
+                  <InputLabel id="outlined-dietaryRestriction" variant='outlined' required size="normal" >Dietary Restriction</InputLabel>
                       < Select 
                         value={selectedRestriction}  
-                        label="Required" 
-                        labelId="Required-basic"
-                        id = "Required-basic"
+                        label="outlined-dietaryRestriction"
                         name = "dietary_restriction"
                         onChange={handleChange_dietary} required> {/* Select component with value and onChange */}
                         <MenuItem value={"No Restriction"}>No Restriction</MenuItem> 
@@ -190,9 +190,9 @@ return (
           </div>
 
           <div className="recipe-generation-output"  style={{ display: "inline-block" , width: "1200px",
-                height: "490px", padding: "20px", color:"black",  backgroundColor: "rgb(243, 250, 224)", 
+                height: "600px", padding: "20px", color:"black",  backgroundColor: "rgb(243, 250, 224)", 
                 borderBlock: "solid", borderBlockColor: "white", writingMode: "horizontal-tb",
-                }}> {recipeResponse}{error} 
+                }}>{recipeResponse}{error} 
           </div>
 
       </div>
