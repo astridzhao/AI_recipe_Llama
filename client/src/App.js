@@ -27,8 +27,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [recipeResponse, setRecipeResponse] = useState("");
   const [error, setError] = useState(null);
-  const [selectedRestriction, setSelectedRestriction] = useState("No Restriction")
   const [requestId, setRequestId] = useState(null); // Add a state for tracking request ID
+  const [selectedRestriction, setSelectedRestriction] = useState("No Restriction");
+  const [selectedDish, setSelectedDish] = useState("No Preference");
+  const [selectedCookingMethod, setSelectedCookingMethod] = useState("No Preference");
+
 
   const copyToClipboard = () => {
       copy(recipeResponse);
@@ -47,8 +50,16 @@ function App() {
     setSelectedRestriction(event3.target.value); // onChange handler
   }
 
-  
+  const handleChange_dish= (event4) => {
+    setSelectedDish(event4.target.value); // onChange handler
+  }
+
+  const handleChange_cookingmethod = (event5) => {
+    setSelectedCookingMethod(event5.target.value); // onChange handler
+  }
+
   function GenerationClick() {
+    console.log("after GenerationClick loading = ", loading);
     let data = {
       method: "POST",
       headers: {
@@ -57,10 +68,14 @@ function App() {
       body: JSON.stringify({'ingredient': formValues.ingredient, 
                             'cuisine_style': formValues.cuisine_style, 
                             'serving_size': formValues.serving_size,
-                            'dietary_restriction': selectedRestriction}),
+                            'dietary_restriction': selectedRestriction,
+                            'typedish':selectedDish,
+                            'cooking_method': selectedCookingMethod}),
     };
 
     setLoading(true)
+
+
     fetch("http://127.0.0.1:5000/recipes/recipe", data)
     .then((response) => { //handle the initial Response object 
       if (!response.ok) {
@@ -82,18 +97,29 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("start generating recipe", requestId);
+    console.log("after get ID, loading = ", loading);
+    console.log("start generating recipe with ", requestId);
     if (!requestId){
-      console.error("no request ID")
-      return
+      console.error("no request ID");
+      return;
     }; // Do nothing if no request ID
+    setLoading(true);
     const interval = setInterval(() => { //to create a repeating interval that executes a function at a specified time interval
     fetch(`http://127.0.0.1:5000/recipes/recipe/${requestId}`)
         .then(response => response.json())
         .then(data => {
           if (data.llm_output) {
-            console.log("set value");
-            setRecipeResponse(prev => prev + data.llm_output); // Append new output
+          // Check if the recipe generation is complete
+            if (data.llm_output === "Recipe completed.") {
+              console.log("Recipe completed.")
+              clearInterval(interval);
+              setLoading(false);
+              
+            }
+            else{
+              console.log("set value.", data.llm_output);
+              setRecipeResponse(prev => prev + data.llm_output); // Append new output
+            }
           }
           else {
             clearInterval(interval);
@@ -103,32 +129,34 @@ function App() {
         .catch(error => {
           clearInterval(interval); // Clear the interval on error
           setLoading(false);
+          setError(error);
           console.error('Error:', error);
         });
-    }, 100); // Poll every 0.1 seconds
+    }, 1000); // Poll every 1 seconds
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(interval);
-    setLoading(false);
   }, [requestId]); // Dependency array includes requestId
 
   function EmptyClick() {
-    setLoading(false)
-    setRecipeResponse(" ");
-    setError(" ")
+    setLoading(false);
+    setRecipeResponse("");
+    setRequestId(null);
+    setError(null);
+    console.log("start generating recipe", requestId);
   }
 
 return (
       <div className="App">
-        <div><ResponsiveAppbar /></div>
+        <div><ResponsiveAppbar/></div>
       
-        <Alert severity="info">The estimated waiting time is 15s.</Alert>
+        <Alert severity="info">The estimated waiting time is about 20s.</Alert>
         <Alert severity="warning">Please empty the last generation before start the new generation.</Alert>
 
-        <div className="App-header">
+        <div className="App-layout">
           
-          <div className="input-box">
+        <div className="input-box">
           <Grid container spacing={2}>
-            <Grid item xs={12} >
+            <Grid item xs={15} >
               <TextField fullWidth id="outlined-ingredient" label="Ingredients" variant="outlined" 
                 className="ingredient-box"
                 name="ingredient" // Correct attribute name is "name"
@@ -137,8 +165,10 @@ return (
                 type="text" 
                 required />
             </Grid>
-            <Grid item xs={4}>
-              <TextField fullWidth id="outlined-servingsize" label="Serving Size" variant="outlined" 
+
+            <Grid item xs={2}>
+              <TextField fullWidth
+                  id="outlined-servingsize" label="Serving Size" variant="outlined" 
                   className="serving-box"
                   name="serving_size" // Correct attribute name is "name"
                   value={formValues.serving_size} // Correct attribute name is "value"
@@ -146,8 +176,9 @@ return (
                   type = "number"
                   required/>
             </Grid>
-            <Grid item xs={4} >
-              <TextField  fullWidth
+
+            <Grid item xs={2} >
+              <TextField fullWidth
                   id="outlined-Cuisine" label="Cuisine" variant="outlined" 
                   className="cuisine-box"
                   name="cuisine_style" 
@@ -156,8 +187,52 @@ return (
                   type="text"
                   required/>
             </Grid>
-            
-            <Grid item xs={4}>
+
+            <Grid item xs={2}>
+              <section className="typedish" style={{textAlign: "left"}}>
+                    <FormControl fullWidth>
+                    <InputLabel id="outlined-typedish" variant='outlined' required size="normal" >Dish Type</InputLabel>
+                        < Select 
+                          value={selectedDish}  
+                          label="outlined-typedish"
+                          name = "typedish"
+                          onChange={handleChange_dish} required> {/* Select component with value and onChange */}
+                          <MenuItem value={"No Preference"}>No Preference</MenuItem> 
+                          <MenuItem value={"Breakfast"}>Breakfast</MenuItem> 
+                          <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                          <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                          <MenuItem value={"Brunch"}>Brunch</MenuItem>
+                          <MenuItem value={"Late Night"}>Late Night</MenuItem>
+                          <MenuItem value={"Dessert"}>Dessert</MenuItem>
+                        </Select>
+                    </FormControl> 
+                  </section>
+            </Grid>
+
+            <Grid item xs={3}>
+              <section className="cooking_method" style={{textAlign: "left"}}>
+                    <FormControl fullWidth>
+                    <InputLabel id="outlined-cooking_method" variant='outlined' required size="normal" >Cooking Method</InputLabel>
+                        < Select 
+                          value={selectedCookingMethod}  
+                          label="outlined-cooking_method"
+                          name = "cooking_method"
+                          onChange={handleChange_cookingmethod} required> {/* Select component with value and onChange */}
+                          <MenuItem value={"No Preference"}>No Preference</MenuItem> 
+                          <MenuItem value={"Air Fryer"}>Air Fryer</MenuItem> 
+                          <MenuItem value={"Stir Fry"}>Stir Fry</MenuItem>
+                          <MenuItem value={"Pan Fry"}>Pan Fry</MenuItem>
+                          <MenuItem value={"Oven Bake"}>Oven Bake</MenuItem>
+                          <MenuItem value={"Grill"}>Grill</MenuItem>
+                          <MenuItem value={"Steam"}>Steam</MenuItem>
+                          <MenuItem value={"Stew"}>Stew</MenuItem>
+                        </Select>
+                    </FormControl> 
+                  </section>
+            </Grid>
+
+
+            <Grid item xs={3}>
               <section className="dietaryRestriction" style={{textAlign: "left"}}>
                   <FormControl fullWidth >
                   <InputLabel id="outlined-dietaryRestriction" variant='outlined' required size="normal" >Dietary Restriction</InputLabel>
@@ -184,13 +259,13 @@ return (
 
         
           <div className="button">
-          <Button className='button-submit'  onClick={GenerationClick} >Recipe start</Button>
+          <Button className='button-submit' onClick={GenerationClick} >Recipe start</Button>
           <Button className = "empty-button" onClick={EmptyClick}>Empty Generation </Button>
           <Button className='copy-button' onClick={copyToClipboard}>Copy to Clipboard</Button>
           </div>
 
-          <div className="recipe-generation-output"  style={{ display: "inline-block" , width: "1200px",
-                height: "600px", padding: "20px", color:"black",  backgroundColor: "rgb(243, 250, 224)", 
+          <div className="recipe-generation-output"  style={{ display: "inline-block" , width: "800px",
+                height: "600px", padding: "20px", spacing: "2px", color:"black",  backgroundColor: "rgb(243, 250, 224)", 
                 borderBlock: "solid", borderBlockColor: "white", writingMode: "horizontal-tb",
                 }}>{recipeResponse}{error} 
           </div>

@@ -20,12 +20,13 @@ ns = api.namespace('recipes', description='Recipe Generation')
 # Specifies the input format:
 recipe_input = api.model('Recipe', {
     'cuisine_style': fields.String(description='The cuisine style'),
-    'ingredient': fields.String( description='The ingredient list'),
+    'ingredient': fields.String(description='The ingredient list'),
     'serving_size': fields.Integer(description='The serving size setting'),
     'dietary_restriction': fields.String(description='The dietary restriction setting'),
+    'typedish' : fields.String(description='The dish type setting'),
+    'cooking_method': fields.String(description='The cooking method setting'),
 })
 
-# Specifies a response format:
 recipe_response = api.model('RecipeResponse', {
     'llm_output': fields.String(required=True, readonly=True, description='Llama answer'),
 })
@@ -33,21 +34,21 @@ recipe_response = api.model('RecipeResponse', {
 class recipeDAO(object):  
     def generate(self, request):
         # Extract user inputs from the request dictionary
-        user_input = request.get('ingredient')  # Provide a default value if key is not found
-        cuisine_style = request.get('cuisine_style')  # Default to 'Asian' if not provided
-        serving_size = request.get('serving_size')  # Default to 2 if not provided
+        user_input = request.get('ingredient')
+        cuisine_style = request.get('cuisine_style')
+        serving_size = request.get('serving_size')
         dietary_restriction = request.get("dietary_restriction")
-        
-        #initialize the dialog
-        SYSTEM_PROMPT = f"""You are a helpful recipe-generating assistant. Based on the user provided ingredients, you will generate a recipe. \
-        Adjust recipe by following the rules: \
-        1. Describe Ingredient List and Instruction in 150 words. \
-        2. If you need use any ingredients outside the user's list, warn the user. \
-        3. Serving size is for {serving_size} adults, multiply ingredients size accordingly. Cuisine style is {cuisine_style}. \
-        4. Notice the user has {dietary_restriction} restriction."""
-        # 6. You don't have to use all ingredients.
-        # 3. Choose some common spice/sauce. \
-        # 4. Provide information about the recipe such as kitchen utensils, preparation steps. 
+        dish_type = request.get("typedish")
+        cooking_method = request.get("cooking_method")
+
+        # Initialize the dialog
+        SYSTEM_PROMPT = f"""As a recipe-generating assistant, your role is to create a recipe based on the ingredients provided by the user. \
+        To ensure a precise and high-quality response, please follow these guidelines:\
+        1. Present a Title, a Ingredient List and a step-by-step Instruction, limiting your response to 150-200 words. \
+        2. If you need use any ingredients outside the user's list, warn the user and give some alternative options. \
+        3. Dish type should be {dish_type}. Cuisine style should be {cuisine_style}. The cooking method should be {cooking_method}.\
+        4. The recipe should be scaled to serve {serving_size} adults.  \
+        5. Be mindful of {dietary_restriction} restriction. """
         
         dialog_history = [{"role": "system", "content": SYSTEM_PROMPT}]
         dialog_history.append({"role": "user", "content": user_input})
@@ -68,7 +69,7 @@ class recipeDAO(object):
         SYSTEM_PROMPT = B_SYS + SYSTEM_PROMPT + E_SYS
         template = B_INST + SYSTEM_PROMPT + user_input + E_INST
         # ./main -m llama-2-7b-chat.Q4_K_M.gguf -c 2048 -b 1024 -p "<<SYS>you are a helpful recipe-generate assistant\n<</SYS>>\n\n"
-        args = ['./main', '-m', pure_name, '-c', '2048', '-n', '1024', '-b', '1024', '-t', '12', '-ngl', '4', '-p', template]
+        args = ['./main', '-m', pure_name, '-ngl', '8', '-p', template]
 
         if (os.getcwd() != llama_cpp_path):
             os.chdir(llama_cpp_path)

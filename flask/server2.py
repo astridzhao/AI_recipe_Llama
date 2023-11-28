@@ -18,6 +18,8 @@ recipe_input = api.model('Recipe', {
     'ingredient': fields.String(description='The ingredient list'),
     'serving_size': fields.Integer(description='The serving size setting'),
     'dietary_restriction': fields.String(description='The dietary restriction setting'),
+    'typedish' : fields.String(description='The dish type setting'),
+    'cooking_method': fields.String(description='The cooking method setting'),
 })
 
 request_id = api.model('requestID', {
@@ -33,106 +35,97 @@ output_queues = {}
 
 class recipeDAO(object):  
     def generate(self, request, request_id):
+        
         # Extract user inputs from the request dictionary
         user_input = request.get('ingredient')
         cuisine_style = request.get('cuisine_style')
         serving_size = request.get('serving_size')
         dietary_restriction = request.get("dietary_restriction")
+        dish_type = request.get("typedish")
+        cooking_method = request.get("cooking_method")
 
         # Initialize the dialog
-        SYSTEM_PROMPT = f"""You are a helpful recipe-generating assistant. Based on the user provided ingredients, you will generate a recipe. \
-        Adjust recipe by following the rules: \
-        1. Describe Ingredient List and Instruction in 150 words. \
-        2. If you need use any ingredients outside the user's list, warn the user. \
-        3. Serving size is for {serving_size} adults, multiply ingredients size accordingly. Cuisine style is {cuisine_style}. \
-        4. Notice the user has {dietary_restriction} restriction. \
-        5. Add some emoji reflecting the words."""
+        SYSTEM_PROMPT = f"""As a recipe-generating assistant, your role is to create a recipe based on the ingredients provided by the user. \
+        To ensure a precise and high-quality response, please follow these guidelines:\
+        1. Present a Title, a Ingredient List and a step-by-step Instruction, limiting your response to 150-200 words. \
+        2. If you need use any ingredients outside the user's list, warn the user and give some alternative options. \
+        3. Dish type should be {dish_type}. Cuisine style should be {cuisine_style}. The cooking method should be {cooking_method}.\
+        4. The recipe should be scaled to serve {serving_size} adults.  \
+        5. Be mindful of {dietary_restriction} restriction. """
 
         dialog_history = [{"role": "system", "content": SYSTEM_PROMPT}]
         dialog_history.append({"role": "user", "content": user_input})
 
         llama_cpp_path = "/Users/astridz/Documents/AI_recipe/llama.cpp"
         pure_name = 'llama-2-7b-chat.Q4_K_M.gguf'
-        local_directory = "/Users/astridz/Documents/AI_recipe/flask"
         
-        if (os.getcwd() != llama_cpp_path):
-            os.chdir(llama_cpp_path)
+        
+        os.chdir(llama_cpp_path)
         
         B_INST, E_INST = "[INST]", "[/INST]"
         B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
         SYSTEM_PROMPT = B_SYS + SYSTEM_PROMPT + E_SYS
         template = B_INST + SYSTEM_PROMPT + user_input + E_INST
-        args = ['./main', '-m', pure_name, '-c', '2048', '-n', '1024', '-b', '1024',  '-ngl', '2', '-p', template]
-
-        # # Start a new thread for running the subprocess
-        # # Testing: threading.Thread(target=self.run_subprocess, args=(args,)).start()
-        # request_id = str(uuid.uuid4())  # Generate a unique request ID
+        args = ['./main', '-m', pure_name, '--multiline-input', '-b', '1024',  '-ngl', '8', '-p', template]
         output_queues[request_id] = queue.Queue()
         threading.Thread(target=self.run_subprocess, args=(args, request_id)).start()
         return {"request_id": request_id, "message": "Processing your request."}
-        # return {"message": "Processing your request. Please check back later for the result."}
-    
+
     # runs in a separate thread, 
     # handles the actual subprocess execution and reads its output line by line, 
     # putting each line into output_queue
     def run_subprocess(self, args, request_id):
+        local_directory = "/Users/astridz/Documents/AI_recipe/flask"
         process = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
         while True:
             line = process.stdout.readline()
-            start_time = time.time()
             if line:
                 if '[/INST]' in line:
                     marker_index = line.find("[/INST]")
                     if marker_index != -1:
-                        newline =  line[marker_index + len("[/INST]"):] 
+                        newline =  line[marker_index + len("[/INST]  "):] 
                         output_queues[request_id].put(newline)
                         print(newline)
-                elif "[INST]"  in line or "<</SYS>>" in line or "You are a helpful recipe-generating assistant." in line:
+                elif "[INST]"  in line or "<</SYS>>" in line or "As a recipe-generating assistant," in line:
                     continue
                 else:
                     if line == "":
                         continue
                     else:
-                        end_time = time.time()
-                        elapsed_time = end_time - start_time
-                        print("total time :",  elapsed_time)
                         print(line)
                         output_queues[request_id].put(line)
             else:
-                break
-            
-        # print(output_queues[request_id].get())
-            
+                output_queues[request_id].put("Recipe completed.")
+                os.chdir(local_directory)
+                process.stdout.close()
+            #     // args = ['curl', '-X', 'OPTIONS', 'http://127.0.0.1:5000/recipes/recipe', '-i']
+            #   // newprocess = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
+            #   // stdout = newprocess.communicate()
+            #   // newprocess.stdout.close()
+                break    
+
 DAO = recipeDAO()
 
 @ns.route('/recipe', methods=['POST'])
 class Recipe(Resource):
     @ns.doc('generate_recipe')
     @ns.expect(recipe_input)
-    # @ns.marshal_with(recipe_response, code=202)
+    @ns.marshal_with(recipe_response, code=202)
     def post(self):
         '''Create a new task'''
-        request_id = str(uuid.uuid4())  # Generate a unique request_id
+        request_id = str(uuid.uuid4()) 
         DAO.generate(api.payload, request_id) 
         return {"llm_output": request_id}, 202
-        # return DAO.generate(api.payload), 202
 
 
-# @app.route('/recipe', defaults={'string': ''})
-@ns.route('/recipe/<request_id>',  methods=['GET'])
+@ns.route('/recipe/<request_id>', methods=['GET'])
 class RecipeResult(Resource):
-    # A new endpoint /recipe/result is added for clients
-    # to check and retrieve the results line by line
     @ns.doc('get_recipe_output')
-    @ns.marshal_with(recipe_response, code=200)
+    @ns.marshal_with(recipe_response, code=201)
     def get(self, request_id):
         '''Get the result of the recipe generation'''
         if request_id in output_queues or not output_queues[request_id].empty():
-                console.log(output_queues[request_id].get())
-                return {"llm_output": output_queues[request_id].get()}, 200
-            # else:
-            #     del output_queue[request_id]
-            #     return {"llm_output": "Generation complete."}, 200
+                return {"llm_output": output_queues[request_id].get()}, 201
         else:
             return {"message": "No result available yet. Please try again later."}, 202
 

@@ -5,7 +5,7 @@
   min-height: 100vh; /* Ensure the app fills the full viewport height */
 }
 
-.App-header {
+.App-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,32 +29,6 @@
   padding: 10px; /* Padding inside the input box */
   
 }
-.ingredient-box{
-  font-family:Georgia, 'Times New Roman', Times, serif;
-  color:#5f6567;
- 
-  padding: 5px; /* Add some padding inside the input box */
-}
-.cuisine-box{
-  color:#5f6567;
-  font-family:Georgia, 'Times New Roman', Times, serif;
- 
-  padding: 5px; /* Add some padding inside the input box */
-}
-.serving-box{
-  color:#5f6567;
-  font-family:Georgia, 'Times New Roman', Times, serif;
-  padding: 5px; /* Add some padding inside the input box */
-}
-
-/* .dietaryRestriction{
-  font-size: 14px;
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  padding: 5px;
-} */
-
 
 .button{
   display: flex;
@@ -105,8 +79,6 @@
 * {
   box-sizing: border-box;
   padding: 0;
-
-  
 }
 .home,
 .reports,
