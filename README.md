@@ -143,12 +143,16 @@ In this app, you can customize the following parts to customize your recipe.
 * **Cooking Method**: do you like to use an air fryer, stir fry, oven baking, or others?
 * **Dietary Restriction**: it helps you filter your restriction, e.g. Vegan, Vegetarian, Nut-allergy, etc.
 
+[Demo: Customization Functionality](https://drive.google.com/file/d/1diQn-5NX-Csf8Vrbpp8C26oZiVvSRE1c/view?usp=sharing)
+
 #### Start the Recipe Generation
 
 After completing the customization, you can click the button "RECIPE START" to start the recipe generation. Note the waiting time for the Llama model to start is about 15 seconds.
 
+[Demo: Generation Functionality](https://drive.google.com/file/d/1dkKgmHzZV6wUf3xC-Xxjq94wpI6J4T36/view?usp=sharing)
 
 #### Copy the Recipe
 
 After finishing the recipe, you can copy the recipe to the clipboard so that easily share it with your friends or family. 
 
+[Demo: Copy Functionality](https://drive.google.com/file/d/1dhLK8Z0LAwmSZsBhNqTgpcC8hCtp3sND/view?usp=sharing)
