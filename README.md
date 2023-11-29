@@ -17,9 +17,8 @@
 - [Acknowledgments](#acknowledgments)
 
 <!-- ABOUT THE PROJECT -->
-Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
-
 ## About the Project
+Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
 
 ### What this App can do?
 * Help people who are new to cooking can have more tasty and healthy food at home and save money on food.
