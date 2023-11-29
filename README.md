@@ -10,12 +10,14 @@
 <!-- ABOUT THE PROJECT -->
 Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
 
-## What this App can do?
+## About the Project
+
+### What this App can do?
 * Help people who are new to cooking can have more tasty and healthy food at home and save money on food.
 * Make an echo-friendly decision for grocery shopping and ingredient choosing.
 * Generate a personalized and unique recipe, “Everyone can be a chief”!
 
-## Built With
+### Built With
 * ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=blue)
 * ![Llama.cpp](https://img.shields.io/badge/Llama.cpp-002b36?style=for-the-badge)
 * ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
@@ -28,7 +30,9 @@ Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- PROPOSAL -->
-## Problem Observation
+## Proposal
+
+### Problem Observation
 
 * **Choosing the Right Recipe**:
   * **Skill Level Barrier**: Many young individuals face difficulty in selecting recipes that align with their cooking skills, often leading to frustration and disinterest.
@@ -45,7 +49,7 @@ Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
   
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Learning Goal
+### Learning Goal
 * Large Language Model (Llama2)
 * Full-stack App Design
 * User Experience
@@ -53,9 +57,11 @@ Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
 <!-- GETTING STARTED -->
 Note: This code is inspired by Trelis [HuggingFace](https://huggingface.co/Trelis) and [YouTube](https://www.youtube.com/@TrelisResearch).
 
-## Prerequisite
+## Getting Started
 
-### Install Architecture
+### Prerequisite
+
+#### Install Architecture
 If you are using Apple Silicon (M1) Mac, make sure you have installed a version of Python that supports arm64 architecture; Otherwise, while installing it will build the llama.ccp x86 version which will be 10x slower on Apple Silicon (M1) Mac. To install arm64 architecture on your laptop, run the following code on your laptop terminal:
 ```zsh
 arm64path = "Miniforge3-MacOSX-arm64.sh"
@@ -63,21 +69,21 @@ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge
 bash Miniforge3-MacOSX-arm64.sh
 ```
 
-## Installation
-### Clone the repo
+### Installation
+#### Clone the repo
 
 You can clone the repository in your local directory.
 ```zsh
 git clone [https://github.com/](https://github.com/AstridZhao/AI_recipe.git)
 ```
-### Install essential packages
+#### Install essential packages
 To have all the packages needed to run the code, you can run the below code in the **terminal** with the main program directory:
 ```zsh
 pip install -r requirements.txt
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Install Llama.cpp
+#### Install Llama.cpp
 The main goal of llama.cpp is to run the LLaMA model using 4-bit integer quantization on a MacBook. The instructions below are for Macs with an **M1 chip**.
 For other operating systems, you can find instructions [here](https://github.com/TrelisResearch/llamacpp-install-basics/blob/main/instructions.md).
 
@@ -104,7 +110,9 @@ cd llama.cpp
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE -->
-## Initiate Program 
+## Usage
+
+### Initiate Program 
 
 To run this program project, you need to start the flask backend by using 
 ```zsh
@@ -124,9 +132,9 @@ You need to run each command in a different terminal. You can do this by splitti
 After starting both servers, the react will bring you to the user interface. 
 <img width="1426" alt="image" src="https://github.com/AstridZhao/AI_recipe/assets/79214456/dadb7755-7fe3-44b1-b71f-0c2453e86299">
 
-## Program Function
+### Program Function
 
-### Customize Recipe
+#### Customize Recipe
 In this app, you can customize the following parts to customize your recipe.
 * **Ingredients**: you can choose ingredients by either clicking the ingredient buttons or manually typing the ingredients in the ingredient input box.
 * **Serving Size**
@@ -135,11 +143,12 @@ In this app, you can customize the following parts to customize your recipe.
 * **Cooking Method**: do you like to use an air fryer, stir fry, oven baking, or others?
 * **Dietary Restriction**: it helps you filter your restriction, e.g. Vegan, Vegetarian, Nut-allergy, etc.
 
-### Start the Recipe Generation
+#### Start the Recipe Generation
 
 After completing the customization, you can click the button "RECIPE START" to start the recipe generation. Note the waiting time for the Llama model to start is about 15 seconds.
 
 
-### Copy the Recipe
+#### Copy the Recipe
+
 After finishing the recipe, you can copy the recipe to the clipboard so that easily share it with your friends or family. 
 
