@@ -21,46 +21,14 @@
   padding-top: 20px;
 }
 
-/* Add styles for the input box */
-.input-box {
-  display: flex; /* Establish this as a flex container */
-  align-items:center; /* Center children horizontally */
-  width: 85%; /* Full width */
-  padding: 10px; /* Padding inside the input box */
-  
-}
+
 
 .button{
   display: flex;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
   flex-direction:row; 
   justify-items: auto; /* Center children vertically */
-}
-.button-submit{
-  width: 180px;        
-  height: 20px;       
-  padding: 5px 10px;
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 30px;
-  
-}
-.empty-button{
-  width: 180px;        
-  height: 20px;       
-  padding: 5px 10px;
-  display:flex;
-  align-items: center;
-}
-
-.copy-button{
-  width: 180px;        
-  height: 20px;       
-  padding: 5px 10px;
-  display:flex;
-  align-items: center;
 }
 
 /* Style the container for input */
