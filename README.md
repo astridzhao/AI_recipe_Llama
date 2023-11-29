@@ -1,11 +1,20 @@
 # AI Recipe Chatbot
 ## Table of Contents
-- [About The Project](#About_The_Project)
-  -  [What this App can do?](#What_this_App_can_do?)
-  -  [Built With](#Built_with)
-- [Proposal](#Proposal)
-- [Usage](#Usage)
-- [License](#License)
+- [About The Project](#about-the-project)
+  - [What this App can do?](#what-this-app-can-do)
+  - [Built With](#built-with)
+- [Proposal](#proposal)
+  - [Problem Observation](#problem-observation)
+  - [Learning Goal](#learning-goal)
+- [Getting Started](#getting-started)
+  - [Prerequisite](#prerequisite)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Initiate Program](#initiate-program)
+  - [Program Function](#program-function)
+- [Contributing](#contributing)
+- [Contact](#contact)
+- [Acknowledgments](#acknowledgments)
 
 <!-- ABOUT THE PROJECT -->
 Keywords: LLMs, Software Design, Beginners Friendly, Environment Friendly
@@ -134,7 +143,7 @@ After starting both servers, the react will bring you to the user interface.
 
 ### Program Function
 
-#### Customize Recipe
+#### * Customize Recipe
 In this app, you can customize the following parts to customize your recipe.
 * **Ingredients**: you can choose ingredients by either clicking the ingredient buttons or manually typing the ingredients in the ingredient input box.
 * **Serving Size**
@@ -145,13 +154,13 @@ In this app, you can customize the following parts to customize your recipe.
 
 [Demo: Customization Functionality](https://drive.google.com/file/d/1diQn-5NX-Csf8Vrbpp8C26oZiVvSRE1c/view?usp=sharing)
 
-#### Start the Recipe Generation
+#### * Start the Recipe Generation
 
 After completing the customization, you can click the button "RECIPE START" to start the recipe generation. Note the waiting time for the Llama model to start is about 15 seconds.
 
 [Demo: Generation Functionality](https://drive.google.com/file/d/1dkKgmHzZV6wUf3xC-Xxjq94wpI6J4T36/view?usp=sharing)
 
-#### Copy the Recipe
+#### * Copy the Recipe
 
 After finishing the recipe, you can copy the recipe to the clipboard so that easily share it with your friends or family. 
 
