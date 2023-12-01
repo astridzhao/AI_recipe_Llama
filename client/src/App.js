@@ -7,7 +7,7 @@ import React, { useState , useEffect} from 'react';
 import ResponsiveAppbar from './Appbar';
 import "./App.css";
 import color from "@mui/material/colors"
-import TextField from "@mui/material/TextField"
+// import TextField from "@mui/material/TextField"
 import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -18,10 +18,11 @@ import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
 import copy from "copy-to-clipboard";
 import Box from '@mui/material/Box';
-import { ButtonGroup, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { Typography, TextField,Container, Paper } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
 
 function App() {
   const [formValues, setFormValues]  = useState({
@@ -200,19 +201,39 @@ function App() {
   }
 
 return (
+
+  
       <div className="App">
+
         <div><ResponsiveAppbar/></div>
       
-        <Alert severity="info">You can personalize the recipe by typing or selecting ingredients, serving size, cuisine style, dish type, cooking method, and dietary restriction. </Alert>
-        <Alert severity="warning">The estimated waiting time is about 20s. Please empty the last generation before start the new generation.</Alert>
+        <Alert severity="info">The estimated waiting time is about 20s. </Alert>
+        <Alert severity="warning"> Please empty the last generation before start the new generation.</Alert>
         
         <div className="App-layout">
+        <Container>
           
+            <Typography variant="h4" fontWeight= 'medium' fontFamily='Arial' gutterBottom = 'true'>
+              Meet Your Personal AI-Powered Life Assistant
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Simply choose or type some ingredients you have on hand and AI Recipe will generate a personalized recipe just for you!
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+            You can add ingredients by clicking the ingredients buttons and remove ingredients by clicking again. You can also input any ingredients by typing.
+
+            To get a more customized recipe, you can choose serving size, cuisine style, dish type, cooking method, and dietary restriction.
+
+            In the end, click " GENERATE RECIPE" button to start!
+            </Typography>
+
+            
+        </Container>
         <div className="input-box">
           <Grid container direction="row" justifyContent="center" alignItems="center" rowSpacing={5} columnSpacing={{ xs: 1}}>
 
             <Grid item xs={12} margin={2}>
-                <TextField fullWidth id="outlined-ingredient" label="Ingredients" variant="outlined" 
+                <TextField fullWidth id="outlined-ingredient" label="Enter your ingredients" variant="outlined" 
                 className="ingredient-box"
                 name="ingredient" // Correct attribute name is "name"
                 type="text" 
@@ -329,14 +350,20 @@ return (
 
         
           <div className="button" >
-          <Grid container direction="row" justifyContent="center" alignItems="center" rowSpacing={1} columnSpacing={7}>
 
-            <Grid item xs={12} >
-                <Button  onClick={GenerationClick}>Recipe start</Button>
-                <Button  onClick={EmptyClick}>Empty Generation </Button>
+          <Grid container marginTop={0.5} direction="row" justifyContent="center" alignItems="center" columnSpacing={1} rowSpacing={4} >
+
+            <Grid item xs={4} md={6}>
+
+                <Button  onClick={GenerationClick} variant="contained" color="primary" >Generate Recipe</Button>
             </Grid>
 
-            <Grid item xs={12} margin={1}>
+            <Grid item xs={4} md={6}>
+                <Button  onClick={EmptyClick}variant="contained" color="primary" >Empty Generation </Button>
+
+            </Grid>
+
+            <Grid item xs={12} >
                 <ContentCopyIcon style = {iconStyle} onClick={copyToClipboard}></ContentCopyIcon>
                 <FavoriteIcon style = {iconStyle}></FavoriteIcon>
                 <ShareIcon style = {iconStyle}></ShareIcon>

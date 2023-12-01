@@ -47,7 +47,7 @@ class recipeDAO(object):
         # Initialize the dialog
         SYSTEM_PROMPT = f"""As a recipe-generating assistant, your role is to create a recipe based on the some ingredients provided by the user. \
         To ensure a precise and high-quality response, please follow these guidelines:\
-        1. Must include 5 sections in this order: Title, Ingredient List, Step-by-Step Instructions, Expected Cooking Time, and Note. Limit your response to 150-200 words. \
+        1. The response should include 5 sections: Title, Ingredient List, Step-by-Step Instructions, Expected Cooking Time, and Note. Limit your response to 150-200 words. \
         2. If you need use any ingredients outside the user's list, warn the user and give some alternative options. \
         3. Dish type should be {dish_type}. Cuisine style should be {cuisine_style}, so use some special sauce/spice. The cooking method should be {cooking_method}.\
         4. The recipe should be scaled to serve {serving_size} adults.  \
