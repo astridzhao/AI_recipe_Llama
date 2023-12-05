@@ -102,14 +102,16 @@ cd llama.cpp
 LLAMA_METAL=1 make
 cd ..
 ```
-Then, after installing llama.cpp, we can require the specific llama model from huggingface. In this project, we chose to use  "llama-2-7b-chat.Q4_K_M.gguf". Run the below code in the **terminal**.
+Then, after installing llama.cpp, we can require the specific llama model from [Huggingface](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF). In this project, we chose to use  "llama-2-7b-chat.Q4_K_M.gguf". Run the below code in the **terminal**.
 ```zsh
 cd llama.cpp
 wget https://huggingface.co/TheBloke/Llama-2-7b-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf
 cd ..
 ```
+> :warning: If you cannot pull the model successfully, you might need to ask authorization from meta-llama by filling a simple 1-minute form with your Huggingface user email address. You can find the model page [here](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf). After you get authorization from meta-llama, you should be able to download and deploy the model.
 
 Now you have the llama model available to run on your laptop. 
+
 To test if your installation is successful, you can do it with the below code in the **terminal**:
 ```zsh
 cd llama.cpp
