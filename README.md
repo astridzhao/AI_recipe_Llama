@@ -70,6 +70,7 @@ Note: This code is inspired by Trelis [HuggingFace](https://huggingface.co/Treli
 ### Prerequisite
 
 #### Python 3.7+ installed 
+You can easily download the latest version of python from [its main page](https://www.python.org/downloads/). 
 
 #### arm64 Architecture
 If you are using Apple Silicon (M1) Mac, make sure you have installed a version of Python that supports arm64 architecture; Otherwise, while installing it will build the llama.ccp x86 version which will be 10x slower on Apple Silicon (M1) Mac. To install arm64 architecture on your laptop, run the following code on your laptop terminal:
@@ -92,9 +93,6 @@ react dropzone: https://github.com/react-dropzone
 
 redux toolkit: https://redux-toolkit.js.org
 
-
-#### Flask 2.0.1
-
 ### Installation
 #### Clone the repo
 
@@ -103,10 +101,13 @@ You can clone the repository in your local directory.
 git clone [https://github.com/](https://github.com/AstridZhao/AI_recipe.git)
 ```
 #### Install essential packages
-To have all the packages needed to run the code, you can run the below code in the **terminal** with the main program directory:
+Then, navigate to the project directory; To have all the packages needed to run the code, you can run the below code in the **terminal** with the main program directory:
 ```zsh
 pip install -r requirements.txt
 ```
+
+I recommend you check what is included in requirements.txt.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Install Llama.cpp
