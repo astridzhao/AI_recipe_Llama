@@ -77,6 +77,15 @@ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge
 bash Miniforge3-MacOSX-arm64.sh
 ```
 
+#### React
+If you do not have React installed on your laptop, you need to install some packages. I highly recommend this [video tutorial](https://www.youtube.com/watch?v=HWpjpq2ux04), which is only 4'30'' long, but explains the installation step by step very well.
+
+node: https://nodejs.org/en/download/ 
+npx: https://www.npmjs.com/package/npx
+react router: https://reactrouter.com 
+react dropzone: https://github.com/react-dropzone
+redux toolkit: https://redux-toolkit.js.org
+
 ### Installation
 #### Clone the repo
 
