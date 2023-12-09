@@ -69,7 +69,9 @@ Note: This code is inspired by Trelis [HuggingFace](https://huggingface.co/Treli
 
 ### Prerequisite
 
-#### Install Architecture
+#### Python 3.7+ installed 
+
+#### arm64 Architecture
 If you are using Apple Silicon (M1) Mac, make sure you have installed a version of Python that supports arm64 architecture; Otherwise, while installing it will build the llama.ccp x86 version which will be 10x slower on Apple Silicon (M1) Mac. To install arm64 architecture on your laptop, run the following code on your laptop terminal:
 ```zsh
 arm64path = "Miniforge3-MacOSX-arm64.sh"
@@ -81,10 +83,17 @@ bash Miniforge3-MacOSX-arm64.sh
 If you do not have React installed on your laptop, you need to install some packages. I highly recommend this [video tutorial](https://www.youtube.com/watch?v=HWpjpq2ux04), which is only 4'30'' long, but explains the installation step by step very well.
 
 node: https://nodejs.org/en/download/ 
+
 npx: https://www.npmjs.com/package/npx
+
 react router: https://reactrouter.com 
+
 react dropzone: https://github.com/react-dropzone
+
 redux toolkit: https://redux-toolkit.js.org
+
+
+#### Flask 2.0.1
 
 ### Installation
 #### Clone the repo
