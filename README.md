@@ -138,6 +138,12 @@ cd llama.cpp
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+#### Install React Dependency
+To install all necessary packages used in this project, run the following code in the **terminal**:
+```zsh
+cd client
+npm i --save-dev @mui/material @mui/icons-material @emotion/react @emotion/styled copy-to-clipboard
+```
 <!-- USAGE -->
 ## Usage
 
